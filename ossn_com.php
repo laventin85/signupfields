@@ -16,9 +16,7 @@ define('__SIGNUP_FIELDS__', ossn_route()->com . 'signupfields/');
  */
 function signup_fields_init(){
 	ossn_add_hook('user', 'signup:fields', 'signup_fields');
-	
-	ossn_unregister_action('user/register');
-	ossn_register_action('user/register', __SIGNUP_FIELDS__ . 'actions/register.php');
+	ossn_add_hook('user', 'default:fields', 'signup_fields');
 }
 /**
  * Signup fields
@@ -30,7 +28,10 @@ function signup_fields_init(){
  * @return array
  */
 function signup_fields($hook, $type, $fields){
-	$fields['text'][] = 'mobile';
+	$extrafield = 	array(
+			'name' => 'com:signupfields:mobile'
+	);
+	$fields['required']['text'][] = $extrafield;
 	return $fields;
 }
 ossn_register_callback('ossn', 'init', 'signup_fields_init');
